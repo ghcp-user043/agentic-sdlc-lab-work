@@ -1,0 +1,52 @@
+name: Agent task contract
+description: Define a scoped task for an agent.
+title: "[Agent task] "
+labels:
+  - agent-task
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What outcome should the agent deliver?
+    validations:
+      required: true
+  - type: textarea
+    id: context-links
+    attributes:
+      label: Context links
+      description: Add relevant issues, pull requests, or documentation links.
+  - type: input
+    id: in-scope-paths
+    attributes:
+      label: In-scope paths
+      description: Which files or directories may be changed?
+    validations:
+      required: true
+  - type: input
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+      description: List areas or changes that must not be included.
+      value: "alembic/, .github/, pyproject.toml, any new dependency"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: How will completion be verified?
+    validations:
+      required: true
+  - type: textarea
+    id: stop-and-ask
+    attributes:
+      label: Stop and ask a human if
+      description: List decisions or situations that require human input.
+    validations:
+      required: true
+  - type: input
+    id: reviewer
+    attributes:
+      label: Reviewer
+      description: Who should review this task?
