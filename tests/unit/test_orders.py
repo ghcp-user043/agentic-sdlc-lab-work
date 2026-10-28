@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from app.modules.orders import service, repository, models
+from app.modules.orders.exceptions import OrderOwnershipError
 from app.modules.orders.service import OrderStateMachine, InvalidOrderTransition
 
 
@@ -177,3 +178,15 @@ def test_update_order_valid_status_transition():
     assert result.status == "processing"
     db.commit.assert_called_once()
     db.refresh.assert_called_once_with(order)
+
+
+def test_cancel_order_delivered_order_rejected():
+    order = _make_order(status=models.OrderStatus.DELIVERED)
+    repo = _make_mock_repo(order=order)
+    db = _make_db()
+
+    with pytest.raises(OrderOwnershipError):
+        service.cancel_order(db, repo, 1)
+
+    assert order.status == models.OrderStatus.DELIVERED
+    db.commit.assert_not_called()
